@@ -43,19 +43,18 @@ public class MainActivity extends AppCompatActivity {
         if(requestCode == REQUEST_CODE)
         {
             if(grantResults[0]==PackageManager.PERMISSION_GRANTED){
-                Toast.makeText(this,"Permission Granted",Toast.LENGTH_SHORT).show();
             }
             else {
                 ActivityCompat.requestPermissions(MainActivity.this,
-                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},REQUEST_CODE);            }
+                        new String[]{Manifest.permission.READ_MEDIA_AUDIO},REQUEST_CODE);}
         }
     }
 
     private void permission() {
-        if(ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        if(ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_MEDIA_AUDIO)
         != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(MainActivity.this,
-                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},REQUEST_CODE);
+                    new String[]{Manifest.permission.READ_MEDIA_AUDIO},REQUEST_CODE);
         }
         else {
             Toast.makeText(this,"Permission Granted",Toast.LENGTH_SHORT).show();
