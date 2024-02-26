@@ -15,25 +15,31 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.music.fragment_menu.ViewPagerAdapter;
+import com.example.music.tab_music.MusicFiles;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 
+import java.net.URL;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     public static final int REQUEST_CODE = 1;
+    public static ArrayList<MusicFiles> musicFiles;
     private ViewPager viewPager;
     private BottomNavigationView bottomNavigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        MviewPager();
         permission();
     }
 //allow
@@ -43,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
         if(requestCode == REQUEST_CODE)
         {
             if(grantResults[0]==PackageManager.PERMISSION_GRANTED){
+                musicFiles = getAudio(this);
+                MviewPager();
             }
             else {
                 ActivityCompat.requestPermissions(MainActivity.this,
@@ -57,10 +65,11 @@ public class MainActivity extends AppCompatActivity {
                     new String[]{Manifest.permission.READ_MEDIA_AUDIO},REQUEST_CODE);
         }
         else {
-            Toast.makeText(this,"Permission Granted",Toast.LENGTH_SHORT).show();
+            musicFiles = getAudio(this);
+            MviewPager();
         }
     }
-
+//botNav
     private void MviewPager() {
         viewPager =findViewById(R.id.viewpaper);
         bottomNavigationView = findViewById(R.id.BottomNAV);
@@ -103,6 +112,37 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+    //Song
+    public static ArrayList<MusicFiles> getAudio(Context context)
+    {
+        ArrayList<MusicFiles> tempAudioList = new ArrayList<>();
+        Uri url = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+        String[] projection = {
+                MediaStore.Audio.Media.ALBUM,
+                MediaStore.Audio.Media.TITLE,
+                MediaStore.Audio.Media.ARTIST,
+                MediaStore.Audio.Media.DATA,
+                MediaStore.Audio.Media.DURATION
+        };
+        Cursor cursor = context.getContentResolver().query(url,projection,
+                null,null,null);
+        if(cursor!=null){
+            while(cursor.moveToNext())
+            {
+                String album = cursor.getString(0);
+                String title = cursor.getString(1);
+                String duration = cursor.getString(2);
+                String path = cursor.getString(3);
+                String artist = cursor.getString(4);
+                MusicFiles musicFiles= new MusicFiles(path,title,artist,album,duration);
+                Log.e("Path: "+ path,"Album: "+album);
+                tempAudioList.add(musicFiles);
+            }
+            cursor.close();
+        }
+        return tempAudioList;
+    }
+
 
 
 }

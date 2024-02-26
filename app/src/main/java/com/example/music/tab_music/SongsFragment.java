@@ -1,12 +1,15 @@
 package com.example.music.tab_music;
 
+import static com.example.music.MainActivity.musicFiles;
+
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.music.R;
 
@@ -16,6 +19,8 @@ import com.example.music.R;
  * create an instance of this fragment.
  */
 public class SongsFragment extends Fragment {
+    RecyclerView recyclerView;
+    MusicAdapter musicAdapter;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -25,6 +30,7 @@ public class SongsFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private View view;
 
     public SongsFragment() {
         // Required empty public constructor
@@ -36,7 +42,7 @@ public class SongsFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment SongsFragment.
+     * @return A new instance of fragment AlbumFragment.
      */
     // TODO: Rename and change types and number of parameters
     public static SongsFragment newInstance(String param1, String param2) {
@@ -61,6 +67,15 @@ public class SongsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_songs, container, false);
+        view= inflater.inflate(R.layout.fragment_songs, container, false);
+        recyclerView=view.findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+        if(!(musicFiles.size()<1)){
+            musicAdapter = new MusicAdapter(getContext(),musicFiles);
+            recyclerView.setAdapter(musicAdapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.
+                    VERTICAL,false));
+        }
+        return view;
     }
 }
