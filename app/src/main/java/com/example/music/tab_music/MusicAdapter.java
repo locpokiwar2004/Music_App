@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
 import android.media.MediaMetadataRetriever;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +40,17 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MyViewHolder
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.music_name.setText(mFiles.get(position).getTitle());
-        Glide.with(mcontext).load(R.drawable.disc).into(holder.album_img);
+
+        try{
+            byte[] img=getIMGSong(mFiles.get(position).getPath());
+            if(img !=null)
+                Glide.with(mcontext).asBitmap().load(img).into(holder.album_img);
+            else
+                Glide.with(mcontext).load(R.drawable.disc).into(holder.album_img);
+        }
+        catch (Exception e){
+            Log.e("error",e.toString());
+        }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,5 +75,16 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MyViewHolder
             album_img=itemView.findViewById(R.id.music_img);
         }
 
+    }
+    private byte[] getIMGSong(String uri){
+        MediaMetadataRetriever retriever=new MediaMetadataRetriever();
+        retriever.setDataSource(uri);
+        byte[] art=retriever.getEmbeddedPicture();
+        try {
+            retriever.release();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return art;
     }
 }

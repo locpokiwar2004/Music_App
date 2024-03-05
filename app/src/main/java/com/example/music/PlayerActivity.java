@@ -36,6 +36,18 @@ public class PlayerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_player);
         intViews();
         getIntentMethod();
+        try {
+            song_name.setText(listSong.get(position).getTitle());
+            if(listSong.get(position).getArtist()!=null){
+                artist_name.setText(listSong.get(position).getArtist());
+            }
+            else {
+                artist_name.setText("Unknown");
+            }
+        }
+        catch (Exception e){
+            Log.e("Error",e.toString());
+        }
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -107,6 +119,7 @@ public class PlayerActivity extends AppCompatActivity {
                 mediaPlayer.start();
             }
             seekBar.setMax(mediaPlayer.getDuration()/1000);
+            Data(uri);
         }
         catch (Exception exception){
             Log.e("error",exception.toString());
@@ -114,7 +127,7 @@ public class PlayerActivity extends AppCompatActivity {
     }
 
     private void intViews() {
-        song_name=findViewById(R.id.music_name);
+        song_name=findViewById(R.id.SongName);
         artist_name=findViewById(R.id.Artist);
         duration_played=findViewById(R.id.durationPlayed);
         duration_total=findViewById(R.id.durationTotal);
