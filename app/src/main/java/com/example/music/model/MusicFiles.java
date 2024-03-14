@@ -1,4 +1,4 @@
-package com.example.music.tab_music;public class MusicFiles {
+package com.example.music.model;public class MusicFiles {
     private String path;
     private String title;
     private String artist;

@@ -1,8 +1,7 @@
-package com.example.music.tab_music;
+package com.example.music.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.media.MediaMetadataRetriever;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,9 +14,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.music.PlayerActivity;
 import com.example.music.R;
+import com.example.music.model.MusicFiles;
 
 import java.io.IOException;
 import java.util.ArrayList;

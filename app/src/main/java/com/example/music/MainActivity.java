@@ -1,48 +1,97 @@
 package com.example.music;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
-import com.example.music.fragment_menu.ViewPagerAdapter;
-import com.example.music.tab_music.MusicFiles;
+import com.example.music.adapter.ViewPagerAdapter;
+import com.example.music.model.Categories;
+import com.example.music.model.MusicFiles;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.tabs.TabLayout;
 
-import java.net.URL;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     public static final int REQUEST_CODE = 1;
     public static ArrayList<MusicFiles> musicFiles;
+    public static ArrayList<Categories> categoriesFiles;
+    public static ArrayAdapter<Categories> cateAdapter;
     private ViewPager viewPager;
     private BottomNavigationView bottomNavigationView;
+    public static String DATABASE_NAME="data5";
+    String DB_PATH_SUFFIX = "/databases/";
+    public static SQLiteDatabase database=null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         permission();
+        prcesscopy();
     }
-//allow
+
+
+    // gerDataBase
+    private void prcesscopy() {
+        File dbFile= getDatabasePath(DATABASE_NAME);
+        if(!dbFile.exists()){
+            try
+            {
+                CopyDataBaseFromAsset();
+                Toast.makeText(this, "Copying sucess from Assets folder", Toast.LENGTH_LONG).show();
+            }
+            catch (Exception e)
+            {
+                Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+    private String getDatabasePath() {
+        return getApplicationInfo().dataDir + DB_PATH_SUFFIX+ DATABASE_NAME;
+    }
+    private void CopyDataBaseFromAsset() {
+        try {
+            InputStream input;
+            input = getAssets().open(DATABASE_NAME);
+            String outFile = getDatabasePath();
+            File f = new File(getApplicationInfo().dataDir+DB_PATH_SUFFIX);
+            if(!f.exists())
+                f.mkdir();
+            OutputStream outputStream = new FileOutputStream(outFile);
+            byte[] buffer = new byte[1024];
+            int length;
+            while((length = input.read(buffer)) > 0){
+                outputStream.write(buffer, 0, length);
+            }
+            outputStream.flush();
+            outputStream.close();
+            input.close();
+
+        } catch (Exception ex) {
+            Log.e("Error",ex.toString());
+        }
+    }
+
+    //Permission
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -113,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    //Song
+    //Songoff
     public static ArrayList<MusicFiles> getAudio(Context context)
     {
         ArrayList<MusicFiles> tempAudioList = new ArrayList<>();
@@ -143,6 +192,23 @@ public class MainActivity extends AppCompatActivity {
         }
         return tempAudioList;
     }
+    //getCate
+    public ArrayList<Categories> getCate( Context context) {
+        ArrayList<Categories> tempCate=new ArrayList<>();
+        database=openOrCreateDatabase(DATABASE_NAME,MODE_PRIVATE,null);
+        Cursor cursorCate= database.rawQuery("select*from Theloai",null);
+        while(cursorCate.moveToNext()){
+            String maCate=cursorCate.getString(0);
+            String tenCate=cursorCate.getString(1);
+            byte[] imgCate=cursorCate.getBlob(2);
+            byte[] bannerCate=cursorCate.getBlob(3);
+            Categories categories= new Categories(maCate,tenCate,imgCate,bannerCate);
+            tempCate.add(categories);
+        }
+        cursorCate.close();
+        return tempCate;
+    }
+//Songon
 
 
 

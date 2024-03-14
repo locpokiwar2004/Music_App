@@ -1,18 +1,21 @@
 package com.example.music.fragment_menu;
 
+import static com.example.music.MainActivity.categoriesFiles;
+
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
-import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.music.R;
-import com.example.music.tab_music.MusicViewPagerAdapter;
-import com.google.android.material.tabs.TabLayout;
+import com.example.music.adapter.CategoriesAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -57,27 +60,17 @@ public class MusicFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        initViewPager();
-    }
-
-    private void initViewPager() {
 
     }
 
-    private TabLayout tabLayout;
-    private ViewPager viewPager;
+    private RecyclerView recyclerView;
     private View mView;
+    CategoriesAdapter categoriesAdapter;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_music, container, false);
-        tabLayout = mView.findViewById(R.id.tab_layout);
-        viewPager =mView.findViewById(R.id.match_viewpager);
-        MusicViewPagerAdapter adapter = new MusicViewPagerAdapter(getChildFragmentManager(),
-                FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-        viewPager.setAdapter(adapter);
-        tabLayout.setupWithViewPager(viewPager);
         return mView;
     }
 }

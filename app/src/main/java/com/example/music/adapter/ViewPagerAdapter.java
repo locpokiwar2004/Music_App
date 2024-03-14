@@ -1,9 +1,12 @@
-package com.example.music.fragment_menu;
+package com.example.music.adapter;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
+
+import com.example.music.fragment_menu.AccountFragment;
+import com.example.music.fragment_menu.MusicFragment;
 
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     public ViewPagerAdapter(@NonNull FragmentManager fm, int behavior) {
