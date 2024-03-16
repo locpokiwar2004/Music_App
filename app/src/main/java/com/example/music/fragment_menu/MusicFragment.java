@@ -1,20 +1,24 @@
 package com.example.music.fragment_menu;
 
-import static com.example.music.MainActivity.categoriesFiles;
+import static com.example.music.activity.MainActivity.categoriesFiles;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.example.music.R;
+import com.example.music.activity.MoreActivity;
 import com.example.music.adapter.CategoriesAdapter;
 
 /**
@@ -64,13 +68,31 @@ public class MusicFragment extends Fragment {
     }
 
     private RecyclerView recyclerView;
+    ImageView btnMore;
     private View mView;
     CategoriesAdapter categoriesAdapter;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_music, container, false);
+        btnMore= mView.findViewById(R.id.btnMore);
+        btnMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), MoreActivity.class);
+                startActivity(intent);
+            }
+        });
+        recyclerView =mView.findViewById(R.id.recyclerview_categories);
+        recyclerView.setHasFixedSize(true);
+           if(!(categoriesFiles.size()<1)){
+               categoriesAdapter= new CategoriesAdapter(getContext(),categoriesFiles);
+               recyclerView.setAdapter(categoriesAdapter);
+               LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false);
+               recyclerView.setLayoutManager(layoutManager);
+           }
+
         return mView;
     }
 }

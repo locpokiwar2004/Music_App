@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:background="@color/black"
     android:orientation="vertical"
-    tools:context=".PlayerActivity">
+    tools:context=".activity.PlayerActivity">
 
     <RelativeLayout
         android:id="@+id/top_btn"

@@ -1,4 +1,4 @@
-package com.example.music;
+package com.example.music.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
+import com.example.music.R;
 import com.example.music.adapter.ViewPagerAdapter;
 import com.example.music.model.Categories;
 import com.example.music.model.MusicFiles;
@@ -98,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         if(requestCode == REQUEST_CODE)
         {
             if(grantResults[0]==PackageManager.PERMISSION_GRANTED){
-                musicFiles = getAudio(this);
+                categoriesFiles = getCate(this);
                 MviewPager();
             }
             else {
@@ -114,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
                     new String[]{Manifest.permission.READ_MEDIA_AUDIO},REQUEST_CODE);
         }
         else {
-            musicFiles = getAudio(this);
+            categoriesFiles = getCate(this);
             MviewPager();
         }
 

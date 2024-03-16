@@ -74,7 +74,7 @@ public class SongsFragment extends Fragment {
         //            recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.
         //                    VERTICAL,false));
         //        }
-        recyclerView=view.findViewById(R.id.recyclerview_categories);
+
         return view;
     }
 }

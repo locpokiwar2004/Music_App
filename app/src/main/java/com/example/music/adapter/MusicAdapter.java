@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.music.PlayerActivity;
+import com.example.music.activity.PlayerActivity;
 import com.example.music.R;
 import com.example.music.model.MusicFiles;
 
@@ -54,7 +54,6 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MyViewHolder
             @Override
             public void onClick(View v) {
                 Intent intent =new Intent(mcontext, PlayerActivity.class);
-                intent.putExtra("position",position);
                 mcontext.startActivity(intent);
             }
         });

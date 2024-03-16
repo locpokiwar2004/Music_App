@@ -15,10 +15,16 @@
         android:theme="@style/Theme.Music"
         tools:targetApi="31">
         <activity
-            android:name=".PlayerActivity"
+            android:name=".activity.DetailcateActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MoreActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.PlayerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
